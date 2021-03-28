@@ -3,7 +3,7 @@ A small collection of code for generating reactive gui's in discord.py
 
 
 
-# Liscense
+# License
 Copyright 2021 https://github.com/VoxLight
 
 Licensed under the Apache License, Version 2.0 (the "License");
