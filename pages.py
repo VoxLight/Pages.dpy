@@ -7,13 +7,20 @@ import math
 import discord
 
 
+# class Page(discord.Embed):
+#     pass
+
+# class Pages():
+#     pass
+
+
 
 def add_fields_to_embed(embed, fields):
     for field in fields:
         embed.add_field(field)
 
 
-def createEmbedsFromFields(template, field_pages):
+def create_embeds_from_fields(template, field_pages):
     # [[f1, f2, f3], [f4, f5, f6], [f7, f8, f9], ....etc]
     
     embeds = []
@@ -29,7 +36,7 @@ def createEmbedsFromFields(template, field_pages):
     
 
 
-def resultsPerPage(items, maxResults):
+def results_per_page(items, maxResults):
     pagedResults = []
     neededPages = math.ceil(len(items)/maxResults)
     for i in range(neededPages):
@@ -37,27 +44,6 @@ def resultsPerPage(items, maxResults):
         pagedResults.append(results)   
 
     return pagedResults
-
-
-
-    
-    
-
-
-
-
-
-
-class Page(discord.Embed):
-    pass
-
-class Pages():
-    pass
-
-
-    
-    
-
 
 async def paginate(
             channel, 
