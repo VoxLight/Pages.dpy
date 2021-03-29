@@ -119,8 +119,13 @@ async def paginate(
             
         book.edit(embed=pages[current_page])
 
+# Usage
+# result = await confirm(ctx, page)
 
-
+# if result: # they said yes
+#     do stuff
+# else: # they said no
+#     do other stuff
 
 async def confirm(
             ctx,
@@ -129,6 +134,20 @@ async def confirm(
             duration=20.0, 
             remove_on_finish=True
         ):
+    """[summary]
+
+    Args:
+        ctx (discord.ext.commands.Context): Invocation context of a command.
+        page (discord.Embed): The embed to display and have a user react to.
+        target_user (discord.Member, optional): Optional member to specify if the one who 
+        needs to react is not the author of the command. Defaults to None.
+        duration (float, optional): How long to wait before timing out. Defaults to 20.0.
+        remove_on_finish (bool, optional): Whether or not the bot should remove the 
+        message once reactions have finished. Defaults to True.
+
+    Returns:
+        [Bool]: If the user accepted or denied the confirmation.
+    """
     
     # You can specify a target user (the user whose reacts we care about)
     # as we may not always want the author of an invoked command as the target.
@@ -139,6 +158,8 @@ async def confirm(
     
     # The reactions we want to handle for.
     x, _ = sym = (":white_check_mark:", ":x:")
+    
+    
     
     # The message that will display in chat and that the user will react to.
     confirmation_message = await ctx.send(embed=page)
@@ -154,17 +175,21 @@ async def confirm(
     check = lambda r, u: (u == target_user) and (r.msg.id == confirmation_message.id) and (r.name in sym)
     
     try:
-        r, u = await client.wait_for('reaction_add', timeout=60.0, check=check)
+        r, u = await client.wait_for('reaction_add', timeout=duration, check=check)
     except asyncio.TimeoutError:
-        if not remove_on_finish:
+        if remove_on_finish:
+            await confirmation_message.delete()
+        else:
             await confirmation_message.edit("*(This message is no longer active)*", embed=page)
-    finally:
+        return False
+    
+    else:
         if remove_on_finish:
             await confirmation_message.delete()
             
-    if r == x:
-        return True
-    return False
+        if r == x:
+            return True
+        return False
             
     
     
