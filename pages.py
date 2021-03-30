@@ -14,13 +14,18 @@ import discord
 # class Pages():
 #     pass
 
+def book(template, fields, fields_per_page=3):
+    pages = results_per_page(fields, fields_per_pages)
+    embeds = add_fields_to_embeds(template, fields)
+    return embeds
 
-def add_fields_to_embed(embed, fields):
+
+def _add_fields(embed, fields):
     for field in fields:
         embed.add_field(field)
 
 
-def book(template, field_pages):
+def add_fields_to_embeds(template, field_pages):
     template.clear_fields()
     # [[f1, f2, f3], [f4, f5, f6], [f7, f8, f9], ....etc]
     
@@ -57,9 +62,9 @@ def _add_reacts(msg, rs):
 
 async def paginate(
             bot,
-            channel, 
-            target_user, 
+            ctx, 
             pages, 
+            target_user=None, 
             duration=60000, 
             remove_on_finish=True
         ):
@@ -97,9 +102,9 @@ async def paginate(
             assert r != x
         except asyncio.TimeoutError and AssertionError:
             if remove_on_finish:
-                await confirmation_message.delete()
+                await book.delete()
                 return
-            await confirmation_message.edit("*(This message is no longer active)*", embed=page)
+            await book.edit("*(This message is no longer active)*", embed=pages[current_page])
             return
         else:
             # Rewind
@@ -111,7 +116,7 @@ async def paginate(
                 if current_page == 0: current_page = last_page
                 else: current_page -= 1   
             # forward
-            elif r == b:     
+            elif r == f:     
                 if current_page == last_page: current_page = first_page
                 else: current_page += 1
                 
