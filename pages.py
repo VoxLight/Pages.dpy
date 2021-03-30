@@ -15,8 +15,8 @@ import discord
 #     pass
 
 def book(template, fields, fields_per_page=3):
-    pages = results_per_page(fields, fields_per_pages)
-    embeds = add_fields_to_embeds(template, fields)
+    pages = results_per_page(fields, fields_per_page)
+    embeds = add_fields_to_embeds(template, pages)
     return embeds
 
 
