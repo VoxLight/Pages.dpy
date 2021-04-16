@@ -108,15 +108,15 @@ async def paginate(
             return
         else:
             # Rewind
-            if r == rw: current_page = first_page  
+            if r.emoji == rw: current_page = first_page  
             # FastForward
-            elif r == ff: current_page = last_page  
+            elif r.emoji == ff: current_page = last_page  
             # Back
-            elif r == b:
+            elif r.emoji == b:
                 if current_page == 0: current_page = last_page
                 else: current_page -= 1   
             # forward
-            elif r == f:     
+            elif r.emoji == f:     
                 if current_page == last_page: current_page = first_page
                 else: current_page += 1
                 
@@ -194,7 +194,7 @@ async def confirm(
         else:
             await confirmation_message.edit("*(This message is no longer active)*", embed=page)
             
-        if r == x:
+        if r.emoji == x:
             return True
         return False
             
