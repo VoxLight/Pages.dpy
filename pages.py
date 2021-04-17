@@ -89,7 +89,7 @@ async def paginate(
     # 2. check that the message being reacted to is the confirmation message
     # 3. check that the reaction that was added is one we handle for.
     def check(r, u): return (u == target_user) and (
-        r.message.id == book.id) and (r.name in sym)
+        r.message.id == book.id) and (r.emoji in sym)
     while 1:
         try:
             r, u = await bot.wait_for('reaction_add', timeout=60.0, check=check)
@@ -101,6 +101,14 @@ async def paginate(
             await book.edit("*(This message is no longer active)*", embed=pages[current_page])
             return
         else:
+
+            # Remove all reactions that are not part of GUI
+            # Remove users selection
+            users = await r.users().flatten()
+            for user in users:
+                if not user == bot.user:
+                    await book.remove_reaction(r.emoji, user)
+
             # Rewind
             if r.emoji == rw:
                 current_page = first_page
@@ -120,7 +128,7 @@ async def paginate(
                 else:
                     current_page += 1
 
-            book.edit(embed=pages[current_page])
+            await book.edit(embed=pages[current_page])
 
 # Usage
 # result = await confirm(ctx, page)
