@@ -1,3 +1,4 @@
+# GUI Pages for Discord.py
 import time
 import asyncio
 import random
@@ -55,13 +56,13 @@ async def _add_reacts(msg, rs):
 
 
 async def paginate(
-    bot,
-    ctx,
-    pages,
-    target_user=None,
-    duration=60000,
-    remove_on_finish=True
-):
+        bot,
+        ctx,
+        pages,
+        target_user=None,
+        duration=60000,
+        remove_on_finish=True
+    ):
     # You can specify a target user (the user whose reacts we care about)
     # as we may not always want the author of an invoked command as the target.
     # i.e. [p]propose @user "@user, do you want to marry @author?" etc.
@@ -88,8 +89,7 @@ async def paginate(
     # 1. check that the one who initially invoked the command is the one who reacted
     # 2. check that the message being reacted to is the confirmation message
     # 3. check that the reaction that was added is one we handle for.
-    def check(r, u): return (u == target_user) and (
-        r.message.id == book.id) and (r.emoji in sym)
+    def check(r, u): return (u == target_user) and (r.message.id == book.id) and (r.emoji in sym)
     while 1:
         try:
             r, u = await bot.wait_for('reaction_add', timeout=60.0, check=check)
@@ -140,13 +140,13 @@ async def paginate(
 
 
 async def confirm(
-    bot,
-    ctx,
-    page,
-    target_user=None,
-    duration=20.0,
-    remove_on_finish=True
-):
+        bot,
+        ctx,
+        page,
+        target_user=None,
+        duration=20.0,
+        remove_on_finish=True
+    ):
     """Prompts a user to confirm. React with a yes for true, react with an X for false.
     Args:
         ctx (discord.ext.commands.Context): Invocation context of a command.
